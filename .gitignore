@@ -1,0 +1,7 @@
+**.log
+/data/mysql/*
+/www/*
+/www/html/*
+!/www/html/index.php
+!/www/html
+docker-compose.yml
