@@ -1,0 +1,12 @@
+**.log
+/data/mysql/*
+!/data/mysql/database
+/www/*
+/www/html/*
+!/www/html/index.php
+!/www/html
+/config/vhosts/app8/*
+!/config/vhosts/app8/default.conf
+/config/vhosts/app72/*
+!/config/vhosts/app72/default.conf
+docker-compose.yml

@@ -1,0 +1,62 @@
+version: "3"
+
+networks:
+  development:
+
+services:
+  app72:
+    build:
+      context: ./bin/php72
+    container_name: lamp-app72
+    restart: "always"
+    tty: true
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - ./www:/var/www
+      - ./config/php/php72/php.ini:/usr/local/etc/php/php.ini
+      - ./config/app72/apache2.conf:/etc/apache2/apache2.conf
+      - ./config/vhosts/app72:/etc/apache2/sites-enabled
+      - ./logs/apache2/app72:/var/log/apache2
+    environment:
+      - PMA_PORT=8081
+    networks:
+      - development
+
+  database:
+    build:
+      context: "./bin/mysql"
+    container_name: "lamp-database"
+    restart: "always"
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+    networks:
+      - development
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: "lamp-phpmyadmin"
+    links:
+      - database
+    environment:
+      - PMA_HOST=lamp-database
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+    ports:
+      - "8081:80"
+    volumes:
+      - /sessions
+      - ./config/php/php72/php.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+    networks:
+      - development
