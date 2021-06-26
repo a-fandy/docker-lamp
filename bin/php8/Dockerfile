@@ -23,3 +23,6 @@ RUN docker-php-ext-install zip
 
 # Enable apache modules
 RUN a2enmod rewrite headers
+
+ENV TZ=America/Los_Angeles
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

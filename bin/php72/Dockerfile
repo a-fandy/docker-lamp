@@ -18,7 +18,7 @@ RUN apt-get -yq install apt-utils nano wget dialog
 RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl3 libcurl3-dev zip openssl
 
 # Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.1.3
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.4.3
 
 # Install xdebug
 RUN pecl install xdebug-2.6.0
@@ -58,3 +58,6 @@ RUN docker-php-ext-install -j$(nproc) gd
 RUN docker-php-ext-install xml
 # Enable apache modules
 RUN a2enmod rewrite headers
+
+ENV TZ=Asia/Jakarta
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
